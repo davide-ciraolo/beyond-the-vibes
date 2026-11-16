@@ -46,7 +46,7 @@ Install Claude Code and the tools the labs use. Get the Taskboard starter into y
 3. **The other tools:**
    - git (included in Git for Windows)
    - Python ≥ 3.11 and [uv](https://docs.astral.sh/uv/)
-   - Node ≥ 22 ([nodejs.org](https://nodejs.org/))
+   - Node ≥ 22.13 ([nodejs.org](https://nodejs.org/); Node 24 LTS recommended). Check with `node -v`
    - [GitHub CLI](https://cli.github.com/) `gh`, signed in with `gh auth login` (optional: you can create the repo on github.com instead)
    - `jq` (used by hook examples on Day 2):
 
@@ -106,7 +106,9 @@ Install Claude Code and the tools the labs use. Get the Taskboard starter into y
 
    ```bash
    uv sync --directory api
-   npm --prefix web install
+   cd web
+   npm install    # inside web/: older npm ignores --prefix for install
+   cd ..
    ```
 
 8. Run both test suites, also from the repo root:
@@ -165,7 +167,9 @@ Install Claude Code and the tools the labs use. Get the Taskboard starter into y
   { "env": { "CLAUDE_CODE_GIT_BASH_PATH": "C:\\Program Files\\Git\\bin\\bash.exe" } }
   ```
 
-- **Corporate proxy: `npm --prefix web install` hangs or fails with certificate errors:** npm needs your company's proxy settings. Ask IT for the proxy and certificate details for npm, or do the setup on a network without the proxy.
+- **`npm ERR! enoent … taskboard\package.json`:** you ran `npm --prefix web install` from the repo root. npm 10 and early npm 11 ignore `--prefix` for `install`. Run `cd web`, `npm install`, `cd ..` as in step 7.
+- **`Cannot find native binding` or `Cannot find module '@rolldown/binding-…'` when running the web tests:** your Node is older than 22.13. Check with `node -v`, install Node 24 LTS (with nvm: `nvm install 24` then `nvm use 24`), delete the `web/node_modules` folder (keep `package-lock.json`), then run `npm install` in `web/` again.
+- **Corporate proxy: `npm install` in `web/` hangs or fails with certificate errors:** npm needs your company's proxy settings. Ask IT for the proxy and certificate details for npm, or do the setup on a network without the proxy.
 - **`claude auth status --text` shows the wrong account:** see step 5 (`ANTHROPIC_API_KEY`), or run `/logout` then `/login` inside `claude`.
 - **`gh repo create` fails:** run `gh auth login` first, or create an empty private repo on github.com and use `git remote add origin <url>`.
 - **Port 8000 already in use (Docker Desktop and WSL often hold it):** run the API on another port and tell the page about it: `uv run --directory api fastapi dev app/main.py --port 8001`, then `API_PORT=8001 npm --prefix web run dev` (PowerShell: `$env:API_PORT=8001; npm --prefix web run dev`).

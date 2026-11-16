@@ -23,7 +23,9 @@ Then, from the repo root:
 
 ```bash
 uv sync --directory api
-npm --prefix web install
+cd web
+npm install    # inside web/: older npm ignores --prefix for install
+cd ..
 uv run --directory api pytest -q
 npm --prefix web test
 ```

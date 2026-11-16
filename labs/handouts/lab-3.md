@@ -13,7 +13,7 @@ Give Claude three new capabilities in the Taskboard repo:
 ## Prerequisites
 
 - Lab 0 done: the starter cloned, both suites run, and Claude Code at least v2.1.287 ⚠ (`claude --version`, `claude update`).
-- Node 18+ for Playwright MCP (Lab 0 already installs Node ≥ 22).
+- Node 18+ for Playwright MCP (Lab 0 already installs Node ≥ 22.13).
 - You're logged in with your subscription (`claude auth status --text`).
 - Labs 1–2 are optional: `lab-3-start` already holds their reference solutions (CLAUDE.md, permissions, due dates and the overdue filter).
 - Read the **Overdue** rule in `README.md`. The new endpoint reuses it.
@@ -25,7 +25,9 @@ Give Claude three new capabilities in the Taskboard repo:
    ```bash
    git switch -c lab-3 lab-3-start
    uv sync --directory api
-   npm --prefix web install
+   cd web
+   npm install    # inside web/: older npm ignores --prefix for install
+   cd ..
    uv run --directory api pytest -q   # 10 passed
    npm --prefix web test              # 12 passed
    ```
