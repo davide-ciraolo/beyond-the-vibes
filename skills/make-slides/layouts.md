@@ -18,7 +18,7 @@ Copy `templates/<layout>.md`, then change the content. Frontmatter props are YAM
 | `stat` | One to three big numbers | `kicker`, `stats: [{value, label, tone?: ink}]` | default: headline, `caption` (put `<Source>` here) |
 | `table` | Comparisons with ≤ 7 rows | `kicker` | default: headline + Markdown table, `caption` |
 
-`kicker` is the module label, e.g. `03 · Claude Code Fundamentals`.
+`kicker` is the module label, e.g. `03 · Claude Code Fundamentals`. Add `info: true` next to it to mark a background-information slide: a circled *i* appears before the kicker.
 
 Components you can use inside any slot:
 - `<Source>text</Source>`: caption line for images and data.
