@@ -4,15 +4,48 @@
 
 ## Goal
 
-Give the Taskboard repo a lean `CLAUDE.md` and a shared `.claude/settings.json`, so that Claude can run both test suites in Manual mode without asking you first. The allow rules should be what removes the prompts, not auto mode.
+Get the Taskboard starter into your own private GitHub repo, then give it a lean `CLAUDE.md` and a shared `.claude/settings.json`, so that Claude can run both test suites in Manual mode without asking you first. The allow rules should be what removes the prompts, not auto mode.
 
 ## Prerequisites
 
-- Lab 0 is done: Claude Code v2.1.287 or later ⚠, and `claude auth status --text` shows your account.
-- You have a local `taskboard` clone with the `lab-*` tags. Both suites passed in the Lab 0 smoke test.
-- You're in a terminal at the repo root. Every command below runs from there.
+- Lab 0 is done: `node -v` prints `v24.…`, Claude Code is v2.1.287 or later ⚠, and `claude auth status --text` shows your account.
+- `taskboard.bundle`: download it from the `labs/` folder of [github.com/davide-ciraolo/beyond-the-vibes](https://github.com/davide-ciraolo/beyond-the-vibes).
 
 ## Steps
+
+### Part A · Get the starter
+
+A1. **Clone the bundle and push it to a new private repo.** In the folder where you saved `taskboard.bundle`:
+
+   ```bash
+   git clone taskboard.bundle taskboard
+   cd taskboard
+   git remote rename origin course
+   gh repo create taskboard --private --source . --remote origin   # or create it on github.com and: git remote add origin <url>
+   git push -u origin main --tags
+   ```
+
+   `course` now points at the bundle, and `origin` at your GitHub repo. The `--tags` push matters: every lab starts from a tag (`lab-1-start`, `lab-2-start`, …). Lab 5 opens a pull request in this repo.
+
+A2. **Install the dependencies,** from the repo root:
+
+   ```bash
+   uv sync --directory api
+   cd web
+   npm install    # inside web/: older npm ignores --prefix for install
+   cd ..
+   ```
+
+A3. **Run both test suites,** also from the repo root:
+
+   ```bash
+   uv run --directory api pytest -q
+   npm --prefix web test
+   ```
+
+   Each suite should report `6 passed`. Check `git remote -v` too: `origin` must point to your GitHub repo. From here on, every command runs from the repo root.
+
+### Part B · CLAUDE.md and permissions
 
 1. **Create a branch at the start tag.** Use a branch, not a detached HEAD.
 
@@ -133,6 +166,7 @@ Give the Taskboard repo a lean `CLAUDE.md` and a shared `.claude/settings.json`,
 
 ## Done when
 
+- `git remote -v` shows `origin` pointing to your GitHub repo, and both suites passed in Part A.
 - The status bar shows Manual mode, and Claude runs `uv run --directory api pytest -q` and `npm --prefix web test` with no permission prompt.
 - `/permissions` shows that the rules come from `.claude/settings.json`, not only from `.claude/settings.local.json`.
 
@@ -144,6 +178,11 @@ Give the Taskboard repo a lean `CLAUDE.md` and a shared `.claude/settings.json`,
 
 ## Troubleshooting
 
+- **`npm ERR! enoent … taskboard\package.json`:** you ran `npm --prefix web install` from the repo root. npm 10 and early npm 11 ignore `--prefix` for `install`. Run `cd web`, `npm install`, `cd ..` as in step A2.
+- **`Cannot find native binding` or `Cannot find module '@rolldown/binding-…'` when running the web tests:** you're not on Node 24. Run `nvm use 24` (see Lab 0, step 4), delete the `web/node_modules` folder (keep `package-lock.json`), then run `npm install` in `web/` again.
+- **Corporate proxy: `npm install` in `web/` hangs or fails with certificate errors:** npm needs your company's proxy settings. Ask IT for the proxy and certificate details for npm, or use a network without the proxy.
+- **`gh repo create` fails:** run `gh auth login` first, or create an empty private repo on github.com and use `git remote add origin <url>`.
+- **Odd API test failures, or `no such column` errors:** an old `api/taskboard.db` from an earlier run is in the way. Delete it and run the tests again.
 - **A test command still prompts:** look for `cd web && npm test` or `cd api && …`. Compound commands (`&&`, `;`, `|`) need every part allowed, so the rule doesn't match. Use the `--prefix` / `--directory` forms, and make sure `CLAUDE.md` lists them that way.
 - **Allow rules seem ignored:** project allow rules apply only after you accept the workspace trust dialog. Deny and ask rules apply even before that. Restart `claude` in the repo root and accept the dialog.
 - **No prompts at all, even before you wrote settings.json:** you're probably in auto mode ⚠. Restart with `claude --permission-mode default` and check the status bar.

@@ -11,7 +11,7 @@ Write a read-only `security-reviewer` subagent by hand. Then take one small feat
 
 ## Prerequisites
 
-- Lab 0 done: `origin` points to your own GitHub repo.
+- Lab 1 Part A done: `origin` points to your own GitHub repo.
 - Lab 3 done: the core toolkit is installed, including the **superpowers** plugin. Check that `/superpowers:` shows up in the `/` menu.
 - Claude Code ≥ v2.1.287 ⚠ verify before delivery (`claude --version`).
 - Missed Lab 3? Starting from `lab-4-start` is enough; it already contains the Lab 3 reference.
@@ -146,7 +146,7 @@ Write a read-only `security-reviewer` subagent by hand. Then take one small feat
 
 ## Stretch goals
 
-- `/security-review`: vulnerability review of your branch against `origin`'s default branch (needs the `origin` remote from Lab 0) ⚠.
+- `/security-review`: vulnerability review of your branch against `origin`'s default branch (needs the `origin` remote from Lab 1 Part A) ⚠.
 - Add `memory: project` to the subagent so it builds knowledge across sessions in `.claude/agent-memory/security-reviewer/`.
 - Run a whole session as the reviewer: `claude --agent security-reviewer`.
 - Compare with the reference: `git diff lab-4 lab-5-start`.
@@ -161,4 +161,4 @@ Write a read-only `security-reviewer` subagent by hand. Then take one small feat
 | Brainstorming keeps asking questions | Minute-15 rule: switch to `docs/superpowers/specs/lab-4-tags-design.md`. |
 | `no such column: tags` | An old database: delete `api/taskboard.db`. |
 | `/code-review` uses an unexpected level | With no level typed it reuses the last one you typed. Type `high` explicitly. |
-| `/security-review` fails | It needs an `origin` remote: `git remote -v` (Lab 0). |
+| `/security-review` fails | It needs an `origin` remote: `git remote -v` (Lab 1 Part A). |

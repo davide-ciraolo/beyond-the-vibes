@@ -9,7 +9,7 @@ Hands-on labs for the *Beyond the Vibes* agentic-coding course. Every lab works 
 
 ## Get the starter
 
-Full instructions, including what to install first, are in [Lab 0](handouts/lab-0-setup.md). In short, from the folder where you saved `taskboard.bundle`:
+Install the tools first with [Lab 0](handouts/lab-0-setup.md) (Node 24, Claude Code, `uv`, git, `jq`). Getting the starter is Part A of [Lab 1](handouts/lab-1.md). In short, from the folder where you saved `taskboard.bundle`:
 
 ```bash
 git clone taskboard.bundle taskboard
@@ -34,8 +34,8 @@ npm --prefix web test
 
 | Lab | Day | Time | Start tag | Handout |
 |---|---|---|---|---|
-| 0 · Setup | Before the course | ~20 min | none (`main`) | [lab-0-setup.md](handouts/lab-0-setup.md) |
-| 1 · CLAUDE.md and permissions | Day 1 | 30 min | `lab-1-start` | [lab-1.md](handouts/lab-1.md) |
+| 0 · Tools and account | Before Day 1 (checked at the welcome) | ~15 min | none | [lab-0-setup.md](handouts/lab-0-setup.md) |
+| 1 · Get the starter, CLAUDE.md and permissions | Day 1 | 30 min | `lab-1-start` | [lab-1.md](handouts/lab-1.md) |
 | 2 · Plan mode, test-first feature, seeded bug | Day 1 | 45 min | `lab-2-start` | [lab-2.md](handouts/lab-2.md) |
 | 3 · Toolkit, Playwright MCP, a project Skill | Day 2 | 40 min | `lab-3-start` | [lab-3.md](handouts/lab-3.md) |
 | 4 · Security-reviewer subagent, brainstorm → plan → build | Day 2 | 40 min | `lab-4-start` | [lab-4.md](handouts/lab-4.md) |

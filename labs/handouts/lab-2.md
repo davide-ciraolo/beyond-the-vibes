@@ -12,7 +12,7 @@ The overdue rules, from the starter's `README.md`:
 
 ## Prerequisites
 
-- Lab 0 is done: Claude Code at least v2.1.287 ⚠, and both test suites run in your Taskboard clone.
+- Lab 0 and Lab 1 Part A are done: Claude Code at least v2.1.287 ⚠, and both test suites run in your Taskboard clone.
 - You don't need your own Lab 1 result. `lab-2-start` already has the reference `CLAUDE.md` and `.claude/settings.json`, which allow both test commands.
 - Two spare terminals to run the API and the page (needed for the seeded bug):
 

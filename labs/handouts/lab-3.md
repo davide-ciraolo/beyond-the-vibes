@@ -12,8 +12,8 @@ Give Claude three new capabilities in the Taskboard repo:
 
 ## Prerequisites
 
-- Lab 0 done: the starter cloned, both suites run, and Claude Code at least v2.1.287 ⚠ (`claude --version`, `claude update`).
-- Node 18+ for Playwright MCP (Lab 0 already installs Node ≥ 22.13).
+- Lab 0 and Lab 1 Part A done: the starter cloned, both suites run, and Claude Code at least v2.1.287 ⚠ (`claude --version`, `claude update`).
+- Node 18+ for Playwright MCP (Lab 0 sets up Node 24).
 - You're logged in with your subscription (`claude auth status --text`).
 - Labs 1–2 are optional: `lab-3-start` already holds their reference solutions (CLAUDE.md, permissions, due dates and the overdue filter).
 - Read the **Overdue** rule in `README.md`. The new endpoint reuses it.

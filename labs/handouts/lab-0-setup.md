@@ -1,17 +1,16 @@
-# Lab 0 · Setup (before the course)
+# Lab 0 · Setup (tools and account)
 
-About 20 minutes. Do this before Day 1 so we can start coding straight away.
+About 15 minutes. Install the tools the labs use and check that Claude Code signs in with the right account. We check this together at the start of Day 1. Getting the Taskboard starter is the first part of Lab 1.
 
 ## Goal
 
-Install Claude Code and the tools the labs use. Get the Taskboard starter into your own private GitHub repo, run both test suites, and have a first short conversation with `claude` in the repo.
+Install Claude Code and the tools the labs use, switch to Node 24, and confirm that `claude` uses the account you expect.
 
 ## Prerequisites
 
 - A Claude account you can sign in with (the one you will use in the course).
 - A GitHub account.
 - macOS 13+, Windows 10 1809+, or Linux (for example Ubuntu 20.04+). 4 GB+ RAM. ⚠
-- `taskboard.bundle`: download it from the `labs/` folder of [github.com/davide-ciraolo/beyond-the-vibes](https://github.com/davide-ciraolo/beyond-the-vibes).
 
 ## Steps
 
@@ -46,7 +45,7 @@ Install Claude Code and the tools the labs use. Get the Taskboard starter into y
 3. **The other tools:**
    - git (included in Git for Windows)
    - Python ≥ 3.11 and [uv](https://docs.astral.sh/uv/)
-   - Node ≥ 22.13 ([nodejs.org](https://nodejs.org/); Node 24 LTS recommended). Check with `node -v`
+   - Node 24 LTS ([nodejs.org](https://nodejs.org/), or with nvm: see step 4)
    - [GitHub CLI](https://cli.github.com/) `gh`, signed in with `gh auth login` (optional: you can create the repo on github.com instead)
    - `jq` (used by hook examples on Day 2):
 
@@ -56,9 +55,25 @@ Install Claude Code and the tools the labs use. Get the Taskboard starter into y
    winget install jqlang.jq   # Windows
    ```
 
-### Update and check
+### Check
 
-4. Check the version, update, and run the diagnostics. You need **v2.1.287 or later**. ⚠
+4. **Switch to Node 24.** The web tests need Node 22.13 or later; the course uses Node 24.
+
+   ```bash
+   node -v
+   ```
+
+   It must print `v24.…`. If it doesn't and you use nvm (or nvm-windows), switch:
+
+   ```bash
+   nvm install 24
+   nvm use 24
+   node -v
+   ```
+
+   Without nvm, install Node 24 LTS from [nodejs.org](https://nodejs.org/) and open a new terminal.
+
+5. Check the Claude Code version, update, and run the diagnostics. You need **v2.1.287 or later**. ⚠
 
    ```bash
    claude --version
@@ -66,13 +81,13 @@ Install Claude Code and the tools the labs use. Get the Taskboard starter into y
    claude doctor
    ```
 
-5. Check which account Claude Code will use:
+6. Check which account Claude Code will use:
 
    ```bash
    claude auth status --text
    ```
 
-   It must show the account you expect. If you haven't signed in yet, run `claude auth login` (or just start `claude` in step 10; it opens the browser login).
+   It must show the account you expect. If you haven't signed in yet, run `claude auth login`.
 
    If it shows an **API key** instead of your account, a stray `ANTHROPIC_API_KEY` in your shell is winning over your login. Remove it for this shell, then check again:
 
@@ -86,80 +101,30 @@ Install Claude Code and the tools the labs use. Get the Taskboard starter into y
 
    If it comes back in new terminals, remove it from your shell profile or system environment variables too.
 
-### Get the starter
-
-6. In the folder where you saved `taskboard.bundle`, clone it and push it to a new **private** repo of your own:
+7. Check the rest of the tools:
 
    ```bash
-   git clone taskboard.bundle taskboard
-   cd taskboard
-   git remote rename origin course
-   gh repo create taskboard --private --source . --remote origin   # or create it on github.com and: git remote add origin <url>
-   git push -u origin main --tags
+   git --version
+   uv --version
+   jq --version
+   gh auth status     # only if you use gh
    ```
-
-   `course` now points at the bundle, and `origin` at your GitHub repo. The `--tags` push matters: every lab starts from a tag (`lab-1-start`, `lab-2-start`, …). Lab 5 opens a pull request in this repo.
-
-### Smoke test
-
-7. Install the dependencies, from the repo root:
-
-   ```bash
-   uv sync --directory api
-   cd web
-   npm install    # inside web/: older npm ignores --prefix for install
-   cd ..
-   ```
-
-8. Run both test suites, also from the repo root:
-
-   ```bash
-   uv run --directory api pytest -q
-   npm --prefix web test
-   ```
-
-   Each suite should report `6 passed`.
-
-9. Check the remotes:
-
-   ```bash
-   git remote -v
-   ```
-
-10. Start Claude Code in the repo:
-
-    ```bash
-    claude
-    ```
-
-    Sign in if the browser opens, then accept the workspace trust dialog. Ask:
-
-    > What does this project do?
-
-    Then end the session. Don't change any files yet; Lab 1 starts from this clean state.
 
 ## Done when
 
-- `claude` answers in the starter repo.
-- Both test suites run.
-- `git remote -v` shows `origin` pointing to your GitHub repo.
+- `node -v` prints `v24.…`.
+- `claude --version` is v2.1.287 or later ⚠, and `claude auth status --text` shows your account.
+- `git`, `uv` and `jq` answer with a version.
 
 ## Stretch goals
 
-- Install the Claude Code extension for VS Code (it uses the CLI you just installed) and open the panel in the repo.
-- Run the app. Use two terminals, both from the repo root:
-
-  ```bash
-  uv run --directory api fastapi dev app/main.py   # API on http://127.0.0.1:8000 (docs at /docs)
-  npm --prefix web run dev                         # page on http://localhost:5173
-  ```
-
-  Tick a task as done, then reload the page. Remember what you see for Lab 2.
-- Run `/status` and `/doctor` inside a `claude` session and see what they report.
+- Install the Claude Code extension for VS Code (it uses the CLI you just installed).
+- Start `claude` in any folder and run `/status` and `/doctor` to see what they report.
 
 ## Troubleshooting
 
 - **`claude`, `uv` or `node` not found right after installing:** open a new terminal so it picks up the new PATH.
+- **`node -v` still shows the old version after `nvm use 24`:** nvm only switches the current terminal. Run `nvm alias default 24` (nvm) so new terminals use 24 too; on nvm-windows, `nvm use 24` is global but needs a new terminal.
 - **`claude --version` is older than v2.1.287:** run `claude update`. For Homebrew or WinGet installs use `brew upgrade claude-code` or `winget upgrade Anthropic.ClaudeCode`. ⚠
 - **Windows: Claude Code can't find Git Bash:** add this to the `env` block of `~/.claude/settings.json`, with the path to your `bash.exe`:
 
@@ -167,10 +132,4 @@ Install Claude Code and the tools the labs use. Get the Taskboard starter into y
   { "env": { "CLAUDE_CODE_GIT_BASH_PATH": "C:\\Program Files\\Git\\bin\\bash.exe" } }
   ```
 
-- **`npm ERR! enoent … taskboard\package.json`:** you ran `npm --prefix web install` from the repo root. npm 10 and early npm 11 ignore `--prefix` for `install`. Run `cd web`, `npm install`, `cd ..` as in step 7.
-- **`Cannot find native binding` or `Cannot find module '@rolldown/binding-…'` when running the web tests:** your Node is older than 22.13. Check with `node -v`, install Node 24 LTS (with nvm: `nvm install 24` then `nvm use 24`), delete the `web/node_modules` folder (keep `package-lock.json`), then run `npm install` in `web/` again.
-- **Corporate proxy: `npm install` in `web/` hangs or fails with certificate errors:** npm needs your company's proxy settings. Ask IT for the proxy and certificate details for npm, or do the setup on a network without the proxy.
-- **`claude auth status --text` shows the wrong account:** see step 5 (`ANTHROPIC_API_KEY`), or run `/logout` then `/login` inside `claude`.
-- **`gh repo create` fails:** run `gh auth login` first, or create an empty private repo on github.com and use `git remote add origin <url>`.
-- **Port 8000 already in use (Docker Desktop and WSL often hold it):** run the API on another port and tell the page about it: `uv run --directory api fastapi dev app/main.py --port 8001`, then `API_PORT=8001 npm --prefix web run dev` (PowerShell: `$env:API_PORT=8001; npm --prefix web run dev`).
-- **Odd API test failures, or `no such column` errors:** an old `api/taskboard.db` from an earlier run is in the way. Delete it and run the tests again.
+- **`claude auth status --text` shows the wrong account:** see step 6 (`ANTHROPIC_API_KEY`), or run `/logout` then `/login` inside `claude`.
