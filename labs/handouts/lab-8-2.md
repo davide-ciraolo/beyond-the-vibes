@@ -39,7 +39,7 @@ Turn the one-off OCR stream into an ingestion pipeline. An upload now becomes a 
 
 5. **Have Claude finish the web pages.** Prompt:
 
-   > Finish `refresh()` in `web/src/tasks.ts` (the task list, polled every 2 seconds) and `renderViewer` in `web/src/viewer.ts` (PDF in an iframe or image on the left, extracted Markdown on the right, `/doc/<id>#page=N`). Use `textContent` for anything that comes from a file. Run the web tests.
+   > Finish `refresh()` in `web/src/tasks.ts` (the task list, polled every 2 seconds) and `renderViewer` in `web/src/viewer.ts` (PDF in an iframe or image on the left, extracted Markdown on the right, `/doc/<id>#page=N`). Show the Markdown rendered by default with `renderMarkdown` from `web/src/render.ts`, which is already written and sanitises its output, and add a button that switches to the raw text. Use `textContent` for anything else that comes from a file. Run the web tests.
 
 6. **Run the stack.**
 
